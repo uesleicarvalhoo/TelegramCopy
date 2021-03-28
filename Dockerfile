@@ -31,7 +31,5 @@ RUN apt-get remove --purge -y \
 # ADD APP
 ADD . .
 
-EXPOSE 80
-
 # ENTRYPOINT
 ENTRYPOINT ["python3", "run.py"]
