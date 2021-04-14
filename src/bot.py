@@ -8,6 +8,7 @@ from telethon.tl.types import PeerChannel
 
 from src.settings import API_HASH, API_TOKEN, TELEGRAM_BOT_API_KEY, TELEGRAM_STRING_SESSION
 from src.utils.logger import logger
+from src.utils.miscellaneous import error_handler_context
 from src.utils.signals_factory import load_signal
 
 telegram_bot = TeleBot(TELEGRAM_BOT_API_KEY)
@@ -32,13 +33,14 @@ async def handler_new_message(event):
 
     for channel_id, message in signal.channels_messages.items():
         logger.info("Signal validated, sending message to Channel %s.." % channel_id)
-        try:
-            telegram_bot.send_message(chat_id=channel_id, text=message)
 
-        except ApiTelegramException:
-            # TODO: Colocar alguma try/except para ignorar os canais que deram erro aqui
-            channel = await client.get_entity(PeerChannel(channel_id))
-            await client.send_message(entity=channel, message=message)
+        with error_handler_context(Exception, context=f"ChannelId {channel_id}"):
+            try:
+                telegram_bot.send_message(chat_id=channel_id, text=message)
+
+            except ApiTelegramException:
+                channel = await client.get_entity(PeerChannel(channel_id))
+                await client.send_message(entity=channel, message=message)
 
 
 def get_channel_id_from_peer(peer: str) -> str:
