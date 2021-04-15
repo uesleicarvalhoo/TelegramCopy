@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from functools import wraps
 from typing import Any, Callable
 
@@ -21,6 +22,7 @@ def error_handler(*exceptions, re_raise: bool = True) -> Callable:
     return handler
 
 
+@contextmanager
 def error_handler_context(*exceptions, context=None) -> None:
     try:
         yield
