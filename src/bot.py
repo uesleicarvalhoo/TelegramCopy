@@ -23,12 +23,17 @@ async def handler_new_message(event):
     signal = load_signal(channel_id)
     event_message = event.message.message
 
-    if not signal or not signal.validate_message(event_message):
+    if not signal:
+        return
+
+    if not signal.validate_message(event_message):
+        logger.info("Message: %(message)s not validated, ignored.")
         return
 
     signal.parse_message(event_message)
 
     if not signal.validate_signal():
+        logger.info("Signal not validated, ignored.")
         return
 
     for channel_id, message in signal.channels_messages.items():
