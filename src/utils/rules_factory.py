@@ -11,7 +11,7 @@ def load_rule(channel_id: str) -> Union[BaseRule, None]:
     if rule_settings := CHANNEL_ID_TO_SETTINGS.get(channel_id):
         with suppress(ModuleNotFoundError, ImportError):
             imported_module = import_module(f".{rule_settings.name}", package="src.rules")
-            return getattr(imported_module, "Signal")(rule_settings.channels)
+            return getattr(imported_module, "Rule")(rule_settings.channels)
 
     logger.warning("ChannelID %s not found, ignored." % channel_id)
     return None
