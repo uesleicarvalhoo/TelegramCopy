@@ -121,3 +121,4 @@ venv.bak/
 *.session-journal
 
 # Others
+settings.json

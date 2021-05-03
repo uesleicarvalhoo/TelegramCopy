@@ -1,9 +1,7 @@
-from typing import Dict
-
-from src.rules.base import BaseSignal
+from src.rules.base import BaseRule
 
 
-class Signal(BaseSignal):
+class Rule(BaseRule):
     def parse_message(self, message: str) -> None:
         self.__base_message = message.replace("Corujão 24hs", "%(group_name)s")
 
@@ -16,7 +14,3 @@ class Signal(BaseSignal):
 
     def validate_message(self, message: str) -> bool:
         return True
-
-    @property
-    def channels_messages(self) -> Dict:
-        return {}
