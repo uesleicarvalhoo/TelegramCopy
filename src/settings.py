@@ -1,18 +1,18 @@
+import json
+
 from decouple import config
+
+from src.schema import RuleSettings
 
 API_HASH = config("API_HASH")
 API_TOKEN = config("API_TOKEN", cast=int)
-TELEGRAM_STRING_SESSION = config("TELEGRAM_STRING_SESSION")
-CHANNEL_ID_AO_VIVO = config("CHANNEL_ID_AO_VIVO", cast=int)
-CHANNEL_ID_24H = config("CHANNEL_ID_24H", cast=int)
-CHANNEL_ID_METODO_CONSISTENTE = config("CHANNEL_ID_METODO_CONSISTENTE", cast=int)
-CHANNEL_ID_METODO_CONSISTENTE_NOVO = config("CHANNEL_ID_METODO_CONSISTENTE_NOVO", cast=int)
-CHANNEL_ID_METODO_CONSISTENTE_V2 = config("CHANNEL_ID_METODO_CONSISTENTE_V2", cast=int)
 TELEGRAM_BOT_API_KEY = config("TELEGRAM_BOT_API_KEY")
+TELEGRAM_STRING_SESSION = config("TELEGRAM_STRING_SESSION")
 
-CHANNEL_ID_TO_NAME = {
-    "1217336884": "signals_elite",
-    "1201518926": "bot_sinais_24h",
-    "1378888625": "corujao",
-    "1177019352": "ao_vivo_jedi",
+with open("settings.json", "r", encoding="utf-8") as f:
+    RULE_SETTINGS = json.load(f)
+
+
+CHANNEL_ID_TO_SETTINGS = {
+    value["telegram_channel_id"]: RuleSettings(**{**value, "name": key}) for key, value in RULE_SETTINGS.items()
 }

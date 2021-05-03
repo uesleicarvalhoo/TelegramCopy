@@ -1,13 +1,9 @@
-from typing import Dict
-
-from src.rules.base import BaseSignal
-from src.settings import (CHANNEL_ID_METODO_CONSISTENTE, CHANNEL_ID_METODO_CONSISTENTE_NOVO,
-                          CHANNEL_ID_METODO_CONSISTENTE_V2)
+from src.rules.base import BaseRule
 
 ALLOWED_MESSAGES = ("WIN GALE", "WIN SEM GALE", "LOSS", "PLACAR DIÁRIO")
 
 
-class Signal(BaseSignal):
+class Rule(BaseRule):
     def parse_message(self, message: str) -> None:
         self.__base_message = message.replace("COMUNIDADE JEDI", "%(group_name)s")
 
@@ -20,11 +16,3 @@ class Signal(BaseSignal):
 
     def validate_message(self, message: str) -> bool:
         return "MOEDA" in message and "OPERAÇÃO" in message or any(x in message for x in ALLOWED_MESSAGES)
-
-    @property
-    def channels_messages(self) -> Dict:
-        return {
-            CHANNEL_ID_METODO_CONSISTENTE: self.base_message % {"group_name": "MÉTODO CONSISTENTE"},
-            CHANNEL_ID_METODO_CONSISTENTE_NOVO: self.base_message % {"group_name": "MÉTODO CONSISTENTE"},
-            CHANNEL_ID_METODO_CONSISTENTE_V2: self.base_message % {"group_name": "MÉTODO CONSISTENTE"},
-        }
