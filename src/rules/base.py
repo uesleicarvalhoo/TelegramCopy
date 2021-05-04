@@ -52,18 +52,15 @@ class BaseRule:
 
     @property
     def base_message(self) -> str:
+        timeframe = f"\n⏳ Timeframe: {self.timeframe}" if self.timeframe else ""
+        obs = f"\n------------------\n⚠️ {self.obs}" if self.obs else ""
         return (
             f"✳️  %(group_name)s ✳️"
             f"\n📊 Ativo: {self.pair}"
             f"\n🔴 Direção: {self.signal}"
             f"\n⏰ Horário: {self.hour}"
-            f"\n⏳ Timeframe: {self.timeframe}"
-            if self.timeframe
-            else "" "\n------------------"
-            if self.obs
-            else "" f"\n⚠️ {self.obs}"
-            if self.obs
-            else ""
+            f"{timeframe}"
+            f"{obs}"
         )
 
     @property
