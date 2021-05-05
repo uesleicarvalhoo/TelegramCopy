@@ -1,5 +1,7 @@
 import logging
 
+from src.settings import LOG_LEVEL
+
 logger = logging.getLogger("telegramcopy")
 handler = logging.StreamHandler()
 
@@ -7,4 +9,4 @@ formater = logging.Formatter("[%(asctime)s] %(levelname)s: %(message)s", datefmt
 handler.setFormatter(formater)
 
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(LOG_LEVEL)
